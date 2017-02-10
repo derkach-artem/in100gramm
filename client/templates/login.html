@@ -1,0 +1,43 @@
+<div ng-cloak="" class="md-inline-form" layout="column" layout-sm="row" layout-align="center center" layout-align-sm="start start" layout-fill>
+	<md-content  id="SignupContent" class="md-whiteframe-10dp" flex-sm>
+		<md-toolbar flex id="materialToolbar">
+			<div class="md-toolbar-tools">
+				<span flex=""></span>
+				<span class="md-headline" align="center">Login Form</span>
+				<span flex=""></span>
+			</div>
+		</md-toolbar>
+		<div layout-padding="">
+			<div></div>
+			<form name="userForm" ng-submit="sendLogin(username, password)" role="form">
+				<input type="hidden" name="action" value="login" />
+				<div layout="row" layout-sm="column">
+					<md-input-container flex-gt-sm="">
+						<label>Email</label>
+						<input required type="text" name="username" ng-model="username"  placeholder="someone@example.com" />
+						<!--<div ng-if="userForm.email.$dirty" ng-messages="userForm.email.$error" role="alert">
+							<div ng-message="required" class="my-message">You can't Login without Email Address.</div>
+							<div ng-message-exp="['email', 'pattern']">You can't Login with wrong Email Address pattern.</div>
+						</div>-->
+					</md-input-container>
+				</div>
+				<div layout="row" layout-sm="column">
+					<md-input-container flex-gt-sm="">
+						<label>Password</label>
+						<input name="password" ng-model="password" type="password" minlength="3" maxlength="100" required placeholder="********">
+						<!--<div ng-if="userForm.password.$dirty" ng-messages="userForm.password.$error" role="alert" multiple>
+							<div ng-message="required">You can't Login without Password.</div>
+							<div ng-message-exp="['minlength', 'maxlength', 'pattern']">There is no password in our database with this pattern. All password contains at least one number, one lowercase and one uppercase character.</div>
+						</div>-->
+					</md-input-container>
+				</div>
+				<md-button class="md-raised md-primary" style="width:100%; margin: 0px 0px;" type="submit" ng-disabled="userForm.$invalid">Login</md-button>
+			</form>
+		</div>
+	</md-content>
+</div>
+
+
+<!--ng-pattern="/^[_a-z0-9-+]+(\.[_a-z0-9-+]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
+
+ng-pattern="/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/" -->

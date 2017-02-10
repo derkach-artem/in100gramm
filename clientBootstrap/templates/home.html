@@ -1,0 +1,43 @@
+<div class="row">
+
+    <style>
+        .drop-box {
+            background: #F8F8F8;
+            border: 5px dashed blue;
+            width: 200px;
+            height: 65px;
+            text-align: center;
+            padding-top: 25px;
+            margin: 10px;
+        }
+        
+        .dragover {
+            border: 5px dashed blue;
+        }
+    </style>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+        <label> Hidden profile
+            <input type="checkbox" ng-model="hiddenProfile" ng-change="cangeVisibleProfile()" ng-init="false">
+        </label>
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-9">
+        <div ngf-drop ngf-select ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+            accept="image/*,application/pdf" ngf-pattern="'image/*,application/pdf'">Drop pdfs or images</div>
+        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+        Files:
+        <ul>
+            <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+        </ul>
+        Upload Log:
+        <!--<pre>{{log}}</pre>-->
+        <!---->
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{progressPercentage}}" aria-valuemin="0" aria-valuemax="100"
+                style="width: {{progressPercentage}}%;"
+                <span class="sr-only">{{progressPercentage}}</span>
+            </div>
+        </div>
+        <!---->
+
+    </div>

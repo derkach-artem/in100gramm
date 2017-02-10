@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="./node_modules/ng-file-upload/dist/ng-file-upload-all.js"></script>
+
+    <script src="./app/app.js"></script>
+    <script src="./app/modules/login.js"></script>
+    <script src="./app/modules/registr.js"></script>
+    <script src="./app/modules/home.js"></script>
+
+</head>
+
+<body ng-app="app" ng-controller="appCtrl">
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" ng-init="menuCollapsed = false" ng-click="isNavCollapsed = !isNavCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Instagramm</a>
+            </div>
+            <div class="collapse navbar-collapse" uib-collapse="!isNavCollapsed">
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="state1">Home</a></li>
+                    <li><a href="#" ng-click="showUsers()">Show Users</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="!isLogin"><a ui-sref="state2">Login</a></li>
+                    <li ng-show="!isLogin"><a ui-sref="state3">Register</a></li>
+                    <li ng-show="isLogin"><a href="#" ng-click="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+    <div ui-view class="container"></div>
+    <div class="container">
+        <div class="row">
+            <div class="center-block list-group" style="width:300px">
+                <a href="#" class="list-group-item" ng-repeat="user in users">{{user.username}}</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
