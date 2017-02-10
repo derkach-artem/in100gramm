@@ -108,7 +108,6 @@ router.post('/showusers', function (request, response) {
                 return;
             }
             if (doc.isAdmin == true) {
-                // найти всех
                 //response.send({'data' : 'Admin'});
                 User.find({}, "username createdAt", function (err, docs) {
                     response.send({ "users": docs });
