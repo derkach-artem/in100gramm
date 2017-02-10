@@ -114,7 +114,6 @@ router.post('/showusers', function (request, response) {
                     response.send({ "users": docs });
                 })
             } else {
-                // только открытые пользователи
                 //response.send({'data' : 'Not Admin'});
                 User.find({ "private": false }, "username createdAt", function (err, docs) {
                     response.send({ "users": docs });
