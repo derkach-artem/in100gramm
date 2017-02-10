@@ -47,7 +47,8 @@ angular
                     var file = files[i];
                     if (!file.$error) {
                         Upload.upload({
-                            url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                            // url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                            url: '/images',
                             data: {
                                 username: $scope.username,
                                 file: file

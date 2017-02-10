@@ -123,6 +123,11 @@ router.post('/showusers', function (request, response) {
 });
 
 
+router.post('/images', function(req, res){
+    console.log('IMAGES');
+});
+
+
 
 module.exports = router;
 
