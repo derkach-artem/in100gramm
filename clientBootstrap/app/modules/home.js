@@ -42,13 +42,13 @@ angular
         $scope.log = '';
 
         $scope.upload = function (files) {
+            $scope.progressPercentage = 0;
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if (!file.$error) {
                         Upload.upload({
-                            // url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                            url: '/images',
+                            url: '/upload',
                             data: {
                                 username: $scope.username,
                                 file: file
@@ -63,9 +63,6 @@ angular
                         }, null, function (evt) {
                             $scope.progressPercentage = parseInt(100.0 * //
                                 evt.loaded / evt.total);
-                            $scope.log = 'progress: ' + $scope.progressPercentage + //
-                                '% ' + evt.config.data.file.name + '\n' +
-                                $scope.log;
                         });
                     }
                 }

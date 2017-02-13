@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const passport = require('passport');
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
+var multipart = require('connect-multiparty');
+//var multipartMiddleware = multipart();
 
 var app = express();
 

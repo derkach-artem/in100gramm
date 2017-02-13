@@ -2,8 +2,16 @@ var express = require('express');
 const mongoose = require('mongoose');
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart({uploadDir : __dirname + '/../temp'});
+
+
+//const Image = mongoose.model('Image');
+const cloudinary = require('cloudinary');
+
 
 var User = require('../models/user.js');
+var Image = require('../models/image.js');
 
 require('../auth/setup-passport.js');
 var router = express.Router();
@@ -122,58 +130,40 @@ router.post('/showusers', function (request, response) {
     });
 });
 
+// router.post('/images', multipartMiddleware, function(req, res){
+//     console.log('IMAGES');
+//     res.send({ok : 'OK'});
+// });
 
-router.post('/images', function(req, res){
-    console.log('IMAGES');
+
+
+cloudinary.config({
+    cloud_name: 'db6y5mykq',
+    api_key: '392787289682527',
+    api_secret: '9Jma95FhgYoCW03AY1gxZ6ChWgg'
 });
 
+router.post('/upload', multipartMiddleware, function (req, res, next) {
+        if (req.files.file) {
+            cloudinary.uploader.upload(req.files.file.path, function (result) {
+                if (result.url) {
+                    let image = new Image();
+                    
+                    image.public_id = result.public_id;
+                    image.url = result.url;
+                    image._owner = req.body.user_id;
+                    image.save((error, response) => {
+                        res.status(201).json({public_id:result.public_id,url:result.url})
+                        
+                    })
+                } else {
+                    res.json(error);
+                }
+            });
+        } else {
+            next();
+        }
+    });
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-router.post('/showusers', isAdminstr, function (request, response, err, next) {
-    console.log('next');
-    if (err) {
-        response.send({ err: 'ERROR ADMIN' });
-    } else {
-        next();
-    }
-});
-
-function isAdminstr(request, response, next) {
-    User.findOne({ _id: request.session._id }, function (err, res) {
-        if (err) {
-            response.send({ err: 'Some ERR DB' })
-        } else {
-            if (res.isAdmin == false) {
-                next(error)
-            } else {
-                next();
-            }
-        }
-    });
-};
