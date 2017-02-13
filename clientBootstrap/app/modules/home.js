@@ -41,6 +41,8 @@ angular
         });
         $scope.log = '';
 
+        $scope.images = [];
+
         $scope.upload = function (files) {
             $scope.progressPercentage = 0;
             if (files && files.length) {
@@ -59,6 +61,8 @@ angular
                                     resp.config.data.file.name +
                                     ', Response: ' + JSON.stringify(resp.data) +
                                     '\n' + $scope.log;
+
+                                    console.log(resp);
                             });
                         }, null, function (evt) {
                             $scope.progressPercentage = parseInt(100.0 * //
