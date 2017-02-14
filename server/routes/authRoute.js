@@ -165,6 +165,10 @@ router.post('/upload', multipartMiddleware, function (req, res, next) {
         }
     });
 
+// router.post('/getCurrentname', function(req, res){
+
+// })
+
 
 // router.post('/getpicture', function(req, res){
 

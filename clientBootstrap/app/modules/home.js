@@ -1,6 +1,10 @@
 angular
-    .module('homeModule', ['ngFileUpload'])
-    .controller('homeCtrl', function ($scope, $http, $location, $state, Upload, $timeout) {
+    .module('homeModule', ['ngFileUpload', 'angular-jwt'])
+    .controller('homeCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper) {
+
+        var expToken = window.localStorage['jwt'];
+        var tokenPayload = jwtHelper.decodeToken(expToken);
+        $location.path('/home/' + tokenPayload.username);
 
         $scope.images = [];
 
@@ -71,7 +75,7 @@ angular
                                     ', Response: ' + JSON.stringify(resp.data) +
                                     '\n' + $scope.log;
 
-                                    console.log(resp);
+                                console.log(resp);
                             });
                         }, null, function (evt) {
                             $scope.progressPercentage = parseInt(100.0 * //

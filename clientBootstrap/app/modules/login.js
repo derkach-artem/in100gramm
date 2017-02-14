@@ -10,7 +10,6 @@ angular.module('loginModule', [])
 					//console.log(response.data.name);
 					window.localStorage['jwt'] = angular.toJson(response.data.token);
 					$location.path('/home/' + response.data.name);
-					console.log('!!!!!!!!!!!!!!!');
 				})
 		};
 	});

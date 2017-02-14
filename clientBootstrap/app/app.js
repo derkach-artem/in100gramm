@@ -2,11 +2,11 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
 
     .config(function ($stateProvider, $urlRouterProvider) {
 
-        $urlRouterProvider.otherwise("/home");
+        $urlRouterProvider.otherwise("/");
 
         $stateProvider
             .state('home', {
-                url: "/home/:userId",
+                url: "/home/:username",
                 templateUrl: "../templates/home.html",
                 controller: 'homeCtrl'
             })
@@ -57,6 +57,15 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
             $scope.isLogin = auth.isLogin();
             //console.log($scope.isLogin)
         })
+
+        // $scope.currentName = '';
+
+        // $http.post('/getCurrentname', {
+        //     token : window.localStorage['jwt']
+        // })
+        //     .then(function(data){
+        //         console.log(data);
+        //     });
 
         $scope.logout = function () {
             $http.get('/logout')
