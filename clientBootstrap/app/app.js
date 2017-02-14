@@ -2,11 +2,11 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
 
     .config(function ($stateProvider, $urlRouterProvider) {
 
-        $urlRouterProvider.otherwise("/");
+        $urlRouterProvider.otherwise("/home");
 
         $stateProvider
             .state('home', {
-                url: "/home/:username",
+                url: "/home}",
                 templateUrl: "../templates/home.html",
                 controller: 'homeCtrl'
             })
@@ -22,12 +22,6 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
                 templateUrl: "../templates/registr.html",
                 controller: 'registrCtrl'
             })
-
-            // .state('state4', {
-            //     url : '/home/:userId',
-            //     templateUrl : '../templates/home.html',
-            //     controller: 'homeCtrl'
-            // });
     })
     .factory('auth', function () {
         var login = {};
@@ -55,22 +49,11 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             $scope.isLogin = auth.isLogin();
-            //console.log($scope.isLogin)
-        })
-
-        // $scope.currentName = '';
-
-        // $http.post('/getCurrentname', {
-        //     token : window.localStorage['jwt']
-        // })
-        //     .then(function(data){
-        //         console.log(data);
-        //     });
+        });
 
         $scope.logout = function () {
             $http.get('/logout')
                 .then(function (response) {
-                    //console.log(angular.toJson(response));
                     window.localStorage.removeItem('jwt');
                     $location.path('/login');
                 });
@@ -81,9 +64,5 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
                 .then(function (response) {
                     $scope.users = response.data.users;
                 })
-        }
-
-        $scope.selectUser = function(){
-
-        }
+        };
     });

@@ -9,7 +9,6 @@ angular
 				password2: password2
 			})
 				.then(function (response) {
-					//console.log(response);
 					window.localStorage['jwt'] = angular.toJson(response.data.token);
 					$location.path('/home');
 				});

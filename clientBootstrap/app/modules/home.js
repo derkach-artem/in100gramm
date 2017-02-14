@@ -3,8 +3,15 @@ angular
     .controller('homeCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper) {
 
         var expToken = window.localStorage['jwt'];
-        var tokenPayload = jwtHelper.decodeToken(expToken);
-        $location.path('/home/' + tokenPayload.username);
+        if (expToken) {
+            var tokenPayload = jwtHelper.decodeToken(expToken);
+            $scope.username = tokenPayload.username;
+        } else {
+            $location.path('/home');
+        }
+
+
+
 
         $scope.images = [];
 
@@ -31,13 +38,6 @@ angular
                             $scope.hiddenProfile = data.data.private;
                         });
                 })
-                // .then(function(){
-                //     $http.post('/getpicture')
-                //         .then(function(data){
-                //             //$scope.images = data;
-                //             console.log(data);
-                //         })
-                // })
                 .catch(function (err) {
                     $state.transitionTo('login');
                 });
