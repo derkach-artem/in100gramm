@@ -25,7 +25,7 @@ router.post('/login', function (request, response, next) {
             let token = user.generateJwt();
             request.session._id = user._doc._id;
             request.session.token = token;
-            response.status(200).send({ token: token })
+            response.status(200).send({ token: token , name : user.username});
         } else {
             response.status(401).send(info)
         }
@@ -164,6 +164,11 @@ router.post('/upload', multipartMiddleware, function (req, res, next) {
             next();
         }
     });
+
+
+// router.post('/getpicture', function(req, res){
+
+// });
 
 
 module.exports = router;

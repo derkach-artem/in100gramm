@@ -31,13 +31,13 @@
             </div>
             <div class="collapse navbar-collapse" uib-collapse="!isNavCollapsed">
                 <ul class="nav navbar-nav">
-                    <li><a ui-sref="state1">Home</a></li>
+                    <li><a ui-sref="home">Home</a></li>
                     <li><a href="#" ng-click="showUsers()">Show Users</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-show="!isLogin"><a ui-sref="state2">Login</a></li>
-                    <li ng-show="!isLogin"><a ui-sref="state3">Register</a></li>
+                    <li ng-show="!isLogin"><a ui-sref="login">Login</a></li>
+                    <li ng-show="!isLogin"><a ui-sref="registr">Register</a></li>
                     <li ng-show="isLogin"><a href="#" ng-click="logout()">Logout</a></li>
                 </ul>
             </div>
@@ -49,7 +49,7 @@
     <div class="container">
         <div class="row">
             <div class="center-block list-group" style="width:300px">
-                <a href="#" class="list-group-item" ng-repeat="user in users">{{user.username}}</a>
+                <a href="#" class="list-group-item" ng-repeat="user in users" ng-click="selectUser()">{{user.username}}</a>
             </div>
         </div>
 

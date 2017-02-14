@@ -2,6 +2,8 @@ angular
     .module('homeModule', ['ngFileUpload'])
     .controller('homeCtrl', function ($scope, $http, $location, $state, Upload, $timeout) {
 
+        $scope.images = [];
+
         $scope.cangeVisibleProfile = function () {
             $http.post('/changeprivate', { "private": $scope.hiddenProfile })
                 .then(function (data) {
@@ -11,13 +13,13 @@ angular
 
         var token = window.localStorage.getItem('jwt');
         if (token == null) {
-            $state.transitionTo('state2');
+            $state.transitionTo('login');
         } else {
             $http.post('/isauth', {
                 token: token
             })
                 .then(function (data) {
-                    $state.transitionTo('state1');
+                    $state.transitionTo('home');
                 })
                 .then(function () {
                     $http.get('/checkprofile')
@@ -25,8 +27,15 @@ angular
                             $scope.hiddenProfile = data.data.private;
                         });
                 })
+                // .then(function(){
+                //     $http.post('/getpicture')
+                //         .then(function(data){
+                //             //$scope.images = data;
+                //             console.log(data);
+                //         })
+                // })
                 .catch(function (err) {
-                    $state.transitionTo('state2');
+                    $state.transitionTo('login');
                 });
         };
 

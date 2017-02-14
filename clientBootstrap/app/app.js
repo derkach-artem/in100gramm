@@ -5,23 +5,29 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
         $urlRouterProvider.otherwise("/home");
 
         $stateProvider
-            .state('state1', {
-                url: "/home",
+            .state('home', {
+                url: "/home/:userId",
                 templateUrl: "../templates/home.html",
                 controller: 'homeCtrl'
             })
 
-            .state('state2', {
+            .state('login', {
                 url: "/login",
                 templateUrl: "../templates/login.html",
                 controller: 'loginCtrl'
             })
 
-            .state('state3', {
+            .state('registr', {
                 url: "/registr",
                 templateUrl: "../templates/registr.html",
                 controller: 'registrCtrl'
-            });
+            })
+
+            // .state('state4', {
+            //     url : '/home/:userId',
+            //     templateUrl : '../templates/home.html',
+            //     controller: 'homeCtrl'
+            // });
     })
     .factory('auth', function () {
         var login = {};
@@ -49,7 +55,7 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             $scope.isLogin = auth.isLogin();
-            console.log($scope.isLogin)
+            //console.log($scope.isLogin)
         })
 
         $scope.logout = function () {
@@ -66,5 +72,9 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
                 .then(function (response) {
                     $scope.users = response.data.users;
                 })
+        }
+
+        $scope.selectUser = function(){
+
         }
     });

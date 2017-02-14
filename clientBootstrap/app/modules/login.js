@@ -7,9 +7,10 @@ angular.module('loginModule', [])
 				password: password
 			})
 				.then(function (response) {
-					//console.log(response);
+					//console.log(response.data.name);
 					window.localStorage['jwt'] = angular.toJson(response.data.token);
-					$location.path('/home');
+					$location.path('/home/' + response.data.name);
+					console.log('!!!!!!!!!!!!!!!');
 				})
 		};
 	});
