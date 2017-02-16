@@ -3,11 +3,12 @@ angular.module('userModule', [])
     // .controller('userCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
     .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope) {
 
-        $scope.username = $stateParams.username;
+         $scope.username = $stateParams.username;
 
         var token = window.localStorage.getItem('jwt');
         if (token == null) {
             $state.transitionTo('login');
+            return;
         } else {
             $http.post('/isauth', {
                 token: token
@@ -26,6 +27,12 @@ angular.module('userModule', [])
                 });
         };
 
+        $http.post('/user/' + $scope.username, {
+            token : window.localStorage['jwt']
+        })
+            .then(function (data) {
+                console.log(data);
+            });
 
         $scope.$watch('files', function () {
             $scope.upload($scope.files);
@@ -57,11 +64,9 @@ angular.module('userModule', [])
                                     resp.config.data.file.name +
                                     ', Response: ' + JSON.stringify(resp.data) +
                                     '\n' + $scope.log;
-
-                                ///console.log(resp);
                             });
                         }, null, function (evt) {
-                            $scope.progressPercentage = parseInt(100.0 * //
+                            $scope.progressPercentage = parseInt(100.0 * 
                                 evt.loaded / evt.total);
                         });
                     }

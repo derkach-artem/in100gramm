@@ -129,28 +129,32 @@ router.post('/showusers', function (request, response) {
     });
 });
 
-router.get('/user/:username', function (req, res) {
-    User.findOne({ _id: request.session._id }, function (err, doc) {
+router.post('/user/:username', function (req, res) {
+    User.findOne({ _id: req.session._id }, function (err, doc) {
         if (err) {
-            response.send({ err: "ERROR DB user/username" })
+            res.send({ err: "ERROR DB user/username" })
         } else {
             if (doc === null) {
                 //не админ, показать открытого и только фотки
-                User.find({ "private": false }, "username createdAt", function (err, docs) {
-                    response.send({ "users": docs });
-                });
+                // User.find({ "username": false }, "username createdAt", function (err, docs) {
+                //     response.send({ "users": docs });
+                // });
+                // return;
+                res.send({"data" : "аноним, показать открытого и только фотки"});
                 return;
             }
-            if (doc.isAdmin == true) {
+            if (doc.isAdmin === true) {
                 // админ, показать даже если скрытый
-                User.find({}, "username createdAt", function (err, docs) {
-                    response.send({ "users": docs });
-                })
+                // User.find({}, "username createdAt", function (err, docs) {
+                //     response.send({ "users": docs });
+                // })
+                res.send({"data" : "админ, показать даже если скрытый"});
             } else {
                 // не админ показать только открытого и только фотки
-                User.find({ "private": false }, "username createdAt", function (err, docs) {
-                    response.send({ "users": docs });
-                });
+                // User.find({ "private": false }, "username createdAt", function (err, docs) {
+                //     response.send({ "users": docs });
+                // });
+                res.send({"data" : "не админ показать только открытого и только фотки"});
             };
         };
     });
@@ -190,15 +194,6 @@ router.post('/upload', multipartMiddleware, function (req, res, next) {
         next();
     }
 });
-
-// router.post('/getCurrentname', function(req, res){
-
-// })
-
-
-// router.post('/getpicture', function(req, res){
-
-// });
 
 
 module.exports = router;
