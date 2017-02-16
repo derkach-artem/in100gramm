@@ -47,7 +47,6 @@ router.post('/registrate', function (request, response) {
                     let token = newUser.generateJwt();
                     request.session._id = user._doc._id;
                     request.session.token = token;
-                    //console.log(user + ' reg');
                     response.status(200).send({ token: token })
                 }
             })
@@ -67,7 +66,6 @@ router.post('/isauth', function (request, response) {
             if (err) {
                 response.status(400).send({ err: "No User find" })
             } else {
-                //response.status(200).send({ username: user.username, isAdmin: user.isAdmin })
                 response.status(200).send({ username: user.username });
             }
         })
@@ -78,8 +76,7 @@ router.post('/isauth', function (request, response) {
 
 router.get('/checkprofile', function (request, response) {
     User.findOne({ _id: request.session._id }, function (err, res) {
-        if (!err) {
-            //console.log(res.private);
+        if (!err) {;
             response.send({
                 "private": res.private
             });
@@ -96,7 +93,6 @@ router.post('/changeprivate', function (request, response) {
             if (err) {
                 response.send({ err: 'Some error update change visible profile' });
             } else {
-                //console.log(res);
                 response.status(200);
             }
         }

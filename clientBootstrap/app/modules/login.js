@@ -1,5 +1,5 @@
 angular.module('loginModule', ['angular-jwt'])
-	.controller('loginCtrl', function ($scope, $http, $location, jwtHelper, $state) {
+	.controller('loginCtrl', function ($scope, $http, $location, jwtHelper, $state, $stateParams, $rootScope) {
 
 		$scope.sendLogin = function (username, password) {
 			$http.post('/login', {
@@ -9,12 +9,8 @@ angular.module('loginModule', ['angular-jwt'])
 				.then(function (response) {
 					window.localStorage['jwt'] = angular.toJson(response.data.token);
 					var expToken = window.localStorage['jwt'];
-					// if (expToken) {
-					// 	var tokenPayload = jwtHelper.decodeToken(expToken);
-					 	 $state.transitionTo('home');
-					// } else {
-					 	//$location.path('/home');
-					// }
-				})
+					$rootScope.name = response.data.name;
+					$state.go('home', {username : $rootScope.name});
+				});
 		};
 	});

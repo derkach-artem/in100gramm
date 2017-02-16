@@ -6,7 +6,7 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
 
         $stateProvider
             .state('home', {
-                url: "/home}",
+                url: "/{username}",
                 templateUrl: "../templates/home.html",
                 controller: 'homeCtrl'
             })
@@ -43,7 +43,7 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
             $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             })
         }])
-    .controller('appCtrl', function ($scope, $http, $location, auth, $rootScope) {
+    .controller('appCtrl', function ($scope, $http, $location, auth, $rootScope, $stateParams) {
 
         $scope.users = [];
 

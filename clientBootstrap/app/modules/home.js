@@ -1,17 +1,8 @@
 angular
     .module('homeModule', ['ngFileUpload', 'angular-jwt'])
-    .controller('homeCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper) {
+    .controller('homeCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
 
-        var expToken = window.localStorage['jwt'];
-        if (expToken) {
-            var tokenPayload = jwtHelper.decodeToken(expToken);
-            $scope.username = tokenPayload.username;
-        } else {
-            $location.path('/home');
-        }
-
-
-
+        $scope.username = $rootScope.name;
 
         $scope.images = [];
 
@@ -30,7 +21,7 @@ angular
                 token: token
             })
                 .then(function (data) {
-                    $state.transitionTo('home');
+                    $state.go('home', {username : $rootScope.name});
                 })
                 .then(function () {
                     $http.get('/checkprofile')
