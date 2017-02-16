@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var multipart = require('connect-multiparty');
-var multipartMiddleware = multipart({uploadDir : __dirname + '/../temp'});
+var multipartMiddleware = multipart({ uploadDir: __dirname + '/../temp' });
 
 
 //const Image = mongoose.model('Image');
@@ -16,6 +16,8 @@ var Image = require('../models/image.js');
 require('../auth/setup-passport.js');
 var router = express.Router();
 
+
+
 router.post('/login', function (request, response, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) {
@@ -25,7 +27,7 @@ router.post('/login', function (request, response, next) {
             let token = user.generateJwt();
             request.session._id = user._doc._id;
             request.session.token = token;
-            response.status(200).send({ token: token , name : user.username});
+            response.status(200).send({ token: token, name: user.username });
         } else {
             response.status(401).send(info)
         }
@@ -76,7 +78,8 @@ router.post('/isauth', function (request, response) {
 
 router.get('/checkprofile', function (request, response) {
     User.findOne({ _id: request.session._id }, function (err, res) {
-        if (!err) {;
+        if (!err) {
+            ;
             response.send({
                 "private": res.private
             });
@@ -126,6 +129,33 @@ router.post('/showusers', function (request, response) {
     });
 });
 
+router.get('/user/:username', function (req, res) {
+    User.findOne({ _id: request.session._id }, function (err, doc) {
+        if (err) {
+            response.send({ err: "ERROR DB user/username" })
+        } else {
+            if (doc === null) {
+                //не админ, показать открытого и только фотки
+                User.find({ "private": false }, "username createdAt", function (err, docs) {
+                    response.send({ "users": docs });
+                });
+                return;
+            }
+            if (doc.isAdmin == true) {
+                // админ, показать даже если скрытый
+                User.find({}, "username createdAt", function (err, docs) {
+                    response.send({ "users": docs });
+                })
+            } else {
+                // не админ показать только открытого и только фотки
+                User.find({ "private": false }, "username createdAt", function (err, docs) {
+                    response.send({ "users": docs });
+                });
+            };
+        };
+    });
+});
+
 // router.post('/images', multipartMiddleware, function(req, res){
 //     console.log('IMAGES');
 //     res.send({ok : 'OK'});
@@ -140,26 +170,26 @@ cloudinary.config({
 });
 
 router.post('/upload', multipartMiddleware, function (req, res, next) {
-        if (req.files.file) {
-            cloudinary.uploader.upload(req.files.file.path, function (result) {
-                if (result.url) {
-                    let image = new Image();
-                    
-                    image.public_id = result.public_id;
-                    image.url = result.url;
-                    image._owner = req.body.user_id;
-                    image.save((error, response) => {
-                        res.status(201).json({public_id:result.public_id,url:result.url})
-                        
-                    })
-                } else {
-                    res.json(error);
-                }
-            });
-        } else {
-            next();
-        }
-    });
+    if (req.files.file) {
+        cloudinary.uploader.upload(req.files.file.path, function (result) {
+            if (result.url) {
+                let image = new Image();
+
+                image.public_id = result.public_id;
+                image.url = result.url;
+                image._owner = req.body.user_id;
+                image.save((error, response) => {
+                    res.status(201).json({ public_id: result.public_id, url: result.url })
+
+                })
+            } else {
+                res.json(error);
+            }
+        });
+    } else {
+        next();
+    }
+});
 
 // router.post('/getCurrentname', function(req, res){
 

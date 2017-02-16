@@ -1,17 +1,9 @@
-angular
-    .module('homeModule', ['ngFileUpload', 'angular-jwt'])
-    .controller('homeCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
+//страница загружает страницу пользователя, работает как ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
+angular.module('userModule', [])
+    // .controller('userCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
+    .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope) {
 
-        $scope.username = $rootScope.name;
-
-        $scope.images = [];
-
-        $scope.cangeVisibleProfile = function () {
-            $http.post('/changeprivate', { "private": $scope.hiddenProfile })
-                .then(function (data) {
-                    $scope.hiddenProfile = data.data.private;
-                });
-        };
+        $scope.username = $stateParams.username;
 
         var token = window.localStorage.getItem('jwt');
         if (token == null) {
@@ -21,7 +13,7 @@ angular
                 token: token
             })
                 .then(function (data) {
-                    $state.go('home', {username : $rootScope.name});
+                    $state.go('user', { username: $rootScope.name });
                 })
                 .then(function () {
                     $http.get('/checkprofile')
@@ -66,7 +58,7 @@ angular
                                     ', Response: ' + JSON.stringify(resp.data) +
                                     '\n' + $scope.log;
 
-                                console.log(resp);
+                                ///console.log(resp);
                             });
                         }, null, function (evt) {
                             $scope.progressPercentage = parseInt(100.0 * //
@@ -75,5 +67,13 @@ angular
                     }
                 }
             }
+        };
+
+
+        $scope.cangeVisibleProfile = function () {
+            $http.post('/changeprivate', { "private": $scope.hiddenProfile })
+                .then(function (data) {
+                    $scope.hiddenProfile = data.data.private;
+                });
         };
     });
