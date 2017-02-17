@@ -8,7 +8,6 @@ const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
 var multipart = require('connect-multiparty');
 //var multipartMiddleware = multipart();
-//var jwt = require('express-jwt');
 
 var app = express();
 
@@ -21,15 +20,6 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-
-////////////express-jwt//////////
-// app.get('/',
-//     jwt({ secret: 'shhhhhhared-secret' }),
-//     function (req, res) {
-//         if (!req.user.admin) return res.sendStatus(401);
-//         res.sendStatus(200);
-//     });
-/////////////////////////////////
 
 var authRoutes = require('./routes/authRoute');
 

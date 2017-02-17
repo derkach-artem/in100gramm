@@ -10,8 +10,12 @@ angular.module('loginModule', ['angular-jwt'])
 					window.localStorage['jwt'] = angular.toJson(response.data.token);
 					var expToken = window.localStorage['jwt'];
 					$rootScope.name = response.data.name;
-					$state.go('user', {username : $rootScope.name});
-					//$state.transitionTo('user');
+					//console.log(response.data.name);
+					//$state.go('user', {username : $rootScope.name});/////////
+					$state.go('user', {username : response.data.name});
+					$rootScope.username = response.data.name
+					//$state.transitionTo('users');
+					//$location.path('/user/'+ response.data.name);
 				});
 		};
 	});

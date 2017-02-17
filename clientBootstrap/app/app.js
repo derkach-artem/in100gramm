@@ -1,4 +1,4 @@
-angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', 'loginModule', 'registrModule', 'usersModule', 'userModule'])
+angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', 'loginModule', 'registrModule', 'usersModule', 'userModule', 'userIDModule'])
 
     .config(function($stateProvider, $urlRouterProvider) {
 
@@ -27,6 +27,11 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
                 url: "/user/:username",
                 templateUrl: "../templates/user.html",
                 controller: 'userCtrl'
+            })
+            .state('userID', {
+                url : '/user',
+                templateUrl : "../templates/user.html",
+                controller : "userIDCtrl"
             })
     })
     .factory('auth', function() {

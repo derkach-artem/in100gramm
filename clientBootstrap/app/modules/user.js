@@ -1,43 +1,42 @@
 //страница загружает страницу пользователя, работает как ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
 angular.module('userModule', [])
     // .controller('userCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
-    .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope) {
+    .controller('userCtrl', function($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope) {
 
-         $scope.username = $stateParams.username;
 
-        var token = window.localStorage.getItem('jwt');
-        if (token == null) {
-            $state.transitionTo('login');
-            return;
-        } else {
-            $http.post('/isauth', {
-                token: token
-            })
-                .then(function (data) {
-                    $state.go('user', { username: $rootScope.name });
-                })
-                .then(function () {
-                    $http.get('/checkprofile')
-                        .then(function (data) {
-                            $scope.hiddenProfile = data.data.private;
-                        });
-                })
-                .catch(function (err) {
-                    $state.transitionTo('login');
-                });
-        };
+        let token = window.localStorage.getItem('jwt');
+        $scope.thisUser = false;
 
-        $http.post('/user/' + $scope.username, {
-            token : window.localStorage['jwt']
+        let userId = $stateParams.username;
+        $http.post('/getCurrentUser', {
+            "userId" : userId
         })
-            .then(function (data) {
-                console.log(data);
-            });
+            .then(function(data) {
+                $scope.currentUser = data.data;
+            })
+            // .then(function() {
+            //     $http.post('/getImagesCurrentUser', $scope.currentUser)
+            //         .then(function(data) {
+            //             $scope.images = data.data;
+            //         })
+            // })
+            .then(function() {
+                if (token == null) {
+                    $scope.thisUser = false;
+                } else {
+                    $http.post('/checkUser', { token: token })
+                        .then(function(data) {
+                            if ((data.data.isAdmin == true) || ($scope.currentUser.username == data.data.username)) {
+                                $scope.thisUser = true;
+                            }
+                        })
+                }
+            })
 
-        $scope.$watch('files', function () {
+        $scope.$watch('files', function() {
             $scope.upload($scope.files);
         });
-        $scope.$watch('file', function () {
+        $scope.$watch('file', function() {
             if ($scope.file != null) {
                 $scope.files = [$scope.file];
             }
@@ -46,7 +45,7 @@ angular.module('userModule', [])
 
         $scope.images = [];
 
-        $scope.upload = function (files) {
+        $scope.upload = function(files) {
             $scope.progressPercentage = 0;
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
@@ -58,15 +57,15 @@ angular.module('userModule', [])
                                 username: $scope.username,
                                 file: file
                             }
-                        }).then(function (resp) {
-                            $timeout(function () {
+                        }).then(function(resp) {
+                            $timeout(function() {
                                 $scope.log = 'file: ' +
                                     resp.config.data.file.name +
                                     ', Response: ' + JSON.stringify(resp.data) +
                                     '\n' + $scope.log;
                             });
-                        }, null, function (evt) {
-                            $scope.progressPercentage = parseInt(100.0 * 
+                        }, null, function(evt) {
+                            $scope.progressPercentage = parseInt(100.0 *
                                 evt.loaded / evt.total);
                         });
                     }
@@ -75,10 +74,47 @@ angular.module('userModule', [])
         };
 
 
-        $scope.cangeVisibleProfile = function () {
+        $scope.cangeVisibleProfile = function() {
             $http.post('/changeprivate', { "private": $scope.hiddenProfile })
-                .then(function (data) {
+                .then(function(data) {
                     $scope.hiddenProfile = data.data.private;
                 });
         };
     });
+
+
+
+
+
+
+
+
+
+
+
+            //$scope.username = $rootScope.username;
+        //console.log($stateParams.username);
+
+        // var token = window.localStorage.getItem('jwt');
+        // if (token == null) {
+        //     $state.transitionTo('login');
+        //     return;
+        // } else {
+        //     $http.post('/isauth', {
+        //         token: token
+        //     })
+        //         .then(function (data) {
+        //             //$state.go('user', { username: $rootScope.name });
+        //             //$location.path('/user/'+ response.data.name);
+        //             $state.go('user', { username: $stateParams.username });
+        //         })
+        //         // .then(function () {
+        //         //     $http.get('/checkprofile')
+        //         //         .then(function (data) {
+        //         //             $scope.hiddenProfile = data.data.private;
+        //         //         });
+        //         // })
+        //         .catch(function (err) {
+        //             $state.transitionTo('login');
+        //         });
+        // };

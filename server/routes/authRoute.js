@@ -1,5 +1,5 @@
 var express = require('express');
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var multipart = require('connect-multiparty');
@@ -129,7 +129,7 @@ router.post('/showusers', function (request, response) {
     });
 });
 
-router.post('/user/:username', function (req, res) {
+router.get('/#!/user/:username', function (req, res) {
     User.findOne({ _id: req.session._id }, function (err, doc) {
         if (err) {
             res.send({ err: "ERROR DB user/username" })
@@ -140,7 +140,7 @@ router.post('/user/:username', function (req, res) {
                 //     response.send({ "users": docs });
                 // });
                 // return;
-                res.send({"data" : "аноним, показать открытого и только фотки"});
+                res.send({ "data": "аноним, показать открытого и только фотки" });
                 return;
             }
             if (doc.isAdmin === true) {
@@ -148,13 +148,13 @@ router.post('/user/:username', function (req, res) {
                 // User.find({}, "username createdAt", function (err, docs) {
                 //     response.send({ "users": docs });
                 // })
-                res.send({"data" : "админ, показать даже если скрытый"});
+                res.send({ "data": "админ, показать даже если скрытый" });
             } else {
                 // не админ показать только открытого и только фотки
                 // User.find({ "private": false }, "username createdAt", function (err, docs) {
                 //     response.send({ "users": docs });
                 // });
-                res.send({"data" : "не админ показать только открытого и только фотки"});
+                res.send({ "data": "не админ показать только открытого и только фотки" });
             };
         };
     });
@@ -194,6 +194,33 @@ router.post('/upload', multipartMiddleware, function (req, res, next) {
         next();
     }
 });
+
+router.post('/getCurrentUser', function (request, response) {
+    User.findOne({ username: request.body.userId }, function (err, user) {
+        if (err) {
+            response.status(400).send({ err: "Error" });
+        }
+        response.status(200).send({ username: user.username, _id: user._id, private: user.private, isAdmin: user.isAdmin });
+    })
+});
+
+
+router.post('/checkUser', function (request, response) {
+
+    if ('"' + request.session.token + '"' == request.body.token.toString()) {
+        User.findOne({ _id: request.session._id }, function (err, user) {
+            if (err) {
+                response.status(400).send({ err: "No User find" })
+            } else {
+                response.status(200).send({ username: user.username, isAdmin: user.isAdmin })
+            }
+        })
+    } else {
+        response.status(500).send({ err: "You need to logout and login again" })
+    }
+})
+
+//определить владельца страницы
 
 
 module.exports = router;

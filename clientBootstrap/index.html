@@ -16,6 +16,7 @@
     <script src="./app/modules/registr.js"></script>
     <script src="./app/modules/users.js"></script>
     <script src="./app/modules/user.js"></script>
+    <script src="./app/modules/userIDCtrl.js"></script>
 
 </head>
 
@@ -33,7 +34,7 @@
             </div>
             <div class="collapse navbar-collapse" uib-collapse="!isNavCollapsed">
                 <ul class="nav navbar-nav">
-                    <li><a ui-sref="user">Home Страница пользователя</a></li>
+                    <li ng-show="isLogin"><a ui-sref="userID">Home Страница пользователя</a></li>
                     <li><a ui-sref="users">Список пользователей</a></li>
                 </ul>
 
