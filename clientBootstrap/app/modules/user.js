@@ -1,7 +1,7 @@
 //страница загружает страницу пользователя, работает как ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
 angular.module('userModule', ['ngFileUpload'])
     // .controller('userCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
-    .controller('userCtrl', function($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope, Upload) {
+    .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope, Upload) {
 
 
         let token = window.localStorage.getItem('jwt');
@@ -9,9 +9,9 @@ angular.module('userModule', ['ngFileUpload'])
 
         let userId = $stateParams.username;
         $http.post('/getCurrentUser', {
-            "userId" : userId
+            "userId": userId
         })
-            .then(function(data) {
+            .then(function (data) {
                 $scope.currentUser = data.data;
             })
             // .then(function() {
@@ -20,12 +20,12 @@ angular.module('userModule', ['ngFileUpload'])
             //             $scope.images = data.data;
             //         })
             // })
-            .then(function() {
+            .then(function () {
                 if (token == null) {
                     $scope.thisUser = false;
                 } else {
                     $http.post('/checkUser', { token: token })
-                        .then(function(data) {
+                        .then(function (data) {
                             if ((data.data.isAdmin == true) || ($scope.currentUser.username == data.data.username)) {
                                 $scope.thisUser = true;
                             }
@@ -33,11 +33,12 @@ angular.module('userModule', ['ngFileUpload'])
                 }
             });
 
-        $scope.$watch('files', function() {
+        $scope.$watch('files', function () {
             console.log($scope.files);
             $scope.upload($scope.files);
+            //$scope.my_upload($scope.files); 
         });
-        $scope.$watch('file', function() {
+        $scope.$watch('file', function () {
             if ($scope.file != null) {
                 $scope.files = [$scope.file];
             }
@@ -76,20 +77,24 @@ angular.module('userModule', ['ngFileUpload'])
         };
 
 
-        $scope.cangeVisibleProfile = function() {
+        $scope.cangeVisibleProfile = function () {
             $http.post('/changeprivate', { "private": $scope.hiddenProfile })
-                .then(function(data) {
+                .then(function (data) {
                     $scope.hiddenProfile = data.data.private;
                 });
         };
+
+        function upload(files) {
+            
+        }
+
+        $scope.del = function ($index) {
+            console.log($index);
+            console.log($scope.files);
+            $scope.files.splice($index, 1);
+        }
+
     });
-
-
-
-
-
-
-
 
 
 

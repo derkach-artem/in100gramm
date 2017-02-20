@@ -53,6 +53,7 @@
                 <tr>
                     <th>Image</th>
                     <th>Name</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
@@ -60,6 +61,7 @@
                 <tr ng-repeat="f in files">
                     <th><img ngf-src="!files[0].$error && files[$index]" ngf-resize="{width: 150, height: 50, quality: 0.9}"></th>
                     <th>{{files[$index].name}}</th>
+                    <th><button type="button" class="btn btn-default" ng-click='del($index)'>Delete</button></th>
                 </tr>
             </tbody>
         </table>
@@ -76,3 +78,5 @@
     </div>
 
     <p>USER PAGE</p>
+
+    <button type="button" class="btn btn-success" ng-click='my-upload()'>Success</button>
