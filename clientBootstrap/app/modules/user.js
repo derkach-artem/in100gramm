@@ -48,6 +48,7 @@ angular.module('userModule', ['ngFileUpload'])
         $scope.upload = function(files) {
             $scope.progressPercentage = 0;
             if (files && files.length) {
+                console.log(files);
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if (!file.$error) {

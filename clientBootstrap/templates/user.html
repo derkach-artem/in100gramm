@@ -14,6 +14,18 @@
         .dragover {
             border: 5px dashed blue;
         }
+
+        th {
+            padding :5px;
+        }
+
+        tr {
+            border-bottom: 2px solid grey;
+        }
+
+        table {
+            width : 100%;
+        }
     </style>
     <div class="col-lg-3 col-md-3 col-sm-3" ng-if="thisUser">
         <label> Hidden profile
@@ -32,11 +44,25 @@
         Upload Log:
 
 
-        <ul>
+        <!--<ul>
             <li ng-repeat="f in files"><img ngf-src="!files[0].$error && files[$index]" ngf-resize="{width: 200, height: 200, quality: 0.9}"></li>
-        </ul>
+        </ul>-->
 
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
 
+            <tbody>
+                <tr ng-repeat="f in files">
+                    <th><img ngf-src="!files[0].$error && files[$index]" ngf-resize="{width: 150, height: 50, quality: 0.9}"></th>
+                    <th>{{files[$index].name}}</th>
+                </tr>
+            </tbody>
+        </table>
         <!--<img ngf-src="!files[0].$error && files[0]" ngf-resize="{width: 50, height: 50, quality: 0.9}">-->
 
         <div class="progress">
