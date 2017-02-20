@@ -26,20 +26,25 @@
             accept="image/*,application/pdf" ngf-pattern="'image/*,application/pdf'">Drop pdfs or images</div>
         <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
         Files:
-        <ul>
+        <!--<ul>
             <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
-        </ul>
+        </ul>-->
         Upload Log:
 
 
-        <img ngf-src="!files[0].$error && files[0]" ngf-resize="{width: 50, height: 50, quality: 0.9}">
+        <ul>
+            <li ng-repeat="f in files"><img ngf-src="!files[0].$error && files[$index]" ngf-resize="{width: 200, height: 200, quality: 0.9}"></li>
+        </ul>
 
-            <div class="progress">
-                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{progressPercentage}}" aria-valuemin="0" aria-valuemax="100"
-                    style="width: {{progressPercentage}}%;" <span class="sr-only">
-                    </span>
-                </div>
+
+        <!--<img ngf-src="!files[0].$error && files[0]" ngf-resize="{width: 50, height: 50, quality: 0.9}">-->
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{progressPercentage}}" aria-valuemin="0" aria-valuemax="100"
+                style="width: {{progressPercentage}}%;" <span class="sr-only">
+                </span>
             </div>
+        </div>
 
 
     </div>
