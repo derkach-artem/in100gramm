@@ -1,10 +1,9 @@
 <p>Users page</p>
 
-    <div class="container">
-        <div class="row">
-            <div class="center-block list-group" style="width:300px">
-                <a href="#" class="list-group-item" ng-repeat="user in users" ng-click="selectUser()">{{user.username}}</a>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="center-block list-group" style="width:300px">
+            <a href="/#!/user/{{user.username}}" class="list-group-item" ng-repeat="user in users">{{user.username}}</a>
         </div>
-
     </div>
+</div>

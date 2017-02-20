@@ -1,6 +1,11 @@
 angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', 'loginModule', 'registrModule', 'usersModule', 'userModule', 'userIDModule'])
 
-    .config(function($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+        //$locationProvider.html5Mode(true);
+        // $locationProvider.html5Mode({
+        //     enabled: true,
+        //     requireBase: false
+        // });
 
         $urlRouterProvider.otherwise("/users");
 
@@ -29,15 +34,15 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
                 controller: 'userCtrl'
             })
             .state('userID', {
-                url : '/user',
-                templateUrl : "../templates/user.html",
-                controller : "userIDCtrl"
+                url: '/user',
+                templateUrl: "../templates/user.html",
+                controller: "userIDCtrl"
             })
     })
-    .factory('auth', function() {
+    .factory('auth', function () {
         var login = {};
 
-        login.isLogin = function() {
+        login.isLogin = function () {
             let token = window.localStorage.getItem('jwt')
 
             if (token) {
@@ -50,29 +55,29 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
         return login;
     })
     .run(['$rootScope', '$location', 'auth', '$stateParams',
-        function($rootScope, $location, auth, $stateParams) {
-            $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+        function ($rootScope, $location, auth, $stateParams) {
+            $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
             })
         }])
-    .controller('appCtrl', function($scope, $http, $location, auth, $rootScope, $stateParams) {
+    .controller('appCtrl', function ($scope, $http, $location, auth, $rootScope, $stateParams) {
 
         $scope.users = [];
 
-        $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             $scope.isLogin = auth.isLogin();
         });
 
-        $scope.logout = function() {
+        $scope.logout = function () {
             $http.get('/logout')
-                .then(function(response) {
+                .then(function (response) {
                     window.localStorage.removeItem('jwt');
                     $location.path('/login');
                 });
         };
 
-        $scope.showUsers = function() {
+        $scope.showUsers = function () {
             $http.post('/showusers')
-                .then(function(response) {
+                .then(function (response) {
                     $scope.users = response.data.users;
                 });
         };

@@ -1,7 +1,7 @@
 //страница загружает страницу пользователя, работает как ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
-angular.module('userModule', [])
+angular.module('userModule', ['ngFileUpload'])
     // .controller('userCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
-    .controller('userCtrl', function($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope) {
+    .controller('userCtrl', function($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope, Upload) {
 
 
         let token = window.localStorage.getItem('jwt');
@@ -31,7 +31,7 @@ angular.module('userModule', [])
                             }
                         })
                 }
-            })
+            });
 
         $scope.$watch('files', function() {
             $scope.upload($scope.files);
