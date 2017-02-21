@@ -1,6 +1,5 @@
 //страница загружает страницу пользователя, работает как ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
 angular.module('userModule', ['ngFileUpload'])
-    // .controller('userCtrl', function ($scope, $http, $location, $state, Upload, $timeout, jwtHelper, $stateParams, $rootScope) {
     .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope, Upload) {
 
 
@@ -33,49 +32,21 @@ angular.module('userModule', ['ngFileUpload'])
                 }
             });
 
-        $scope.$watch('files', function () {
-            console.log($scope.files);
-            $scope.upload($scope.files);
-            //$scope.my_upload($scope.files); 
-        });
-        $scope.$watch('file', function () {
-            if ($scope.file != null) {
-                $scope.files = [$scope.file];
-            }
-        });
-        $scope.log = '';
-
         $scope.images = [];
 
-        $scope.upload = function(files) {
-            $scope.progressPercentage = 0;
-            if (files && files.length) {
-                // console.log(files);
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    if (!file.$error) {
-                        Upload.upload({
-                            url: '/upload',
-                            data: {
-                                username: $scope.username,
-                                file: file
-                            }
-                        }).then(function(resp) {
-                            $timeout(function() {
-                                $scope.log = 'file: ' +
-                                    resp.config.data.file.name +
-                                    ', Response: ' + JSON.stringify(resp.data) +
-                                    '\n' + $scope.log;
-                            });
-                        }, null, function(evt) {
-                            $scope.progressPercentage = parseInt(100.0 *
-                                evt.loaded / evt.total);
-                        });
-                    }
-                }
-            }
-        };
+        $scope.toggle = true;
 
+        $scope.loadImgs = function (files) {
+            return Upload.upload({
+                url: '/upload',
+                data: { file: files }
+            })
+                .then(res => {
+                    if (res.status = 201) {
+                        return res.data;
+                    }
+                });
+        };
 
         $scope.cangeVisibleProfile = function () {
             $http.post('/changeprivate', { "private": $scope.hiddenProfile })
@@ -84,22 +55,18 @@ angular.module('userModule', ['ngFileUpload'])
                 });
         };
 
-        function upload(files) {
-            
-        }
-
         $scope.del = function ($index) {
             console.log($index);
             console.log($scope.files);
             $scope.files.splice($index, 1);
         }
-
     });
 
 
 
 
-            //$scope.username = $rootScope.username;
+
+        //$scope.username = $rootScope.username;
         //console.log($stateParams.username);
 
         // var token = window.localStorage.getItem('jwt');

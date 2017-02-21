@@ -173,25 +173,46 @@ cloudinary.config({
     api_secret: '9Jma95FhgYoCW03AY1gxZ6ChWgg'
 });
 
+// router.post('/upload', multipartMiddleware, function (req, res, next) {
+//     console.log(req.files.file);
+//     if (req.files.files) {
+//         cloudinary.uploader.upload(req.files.file.path, function (result) {
+//             if (result.url) {
+//                 let image = new Image();
+//                 image.public_id = result.public_id;
+//                 image.url = result.url;
+//                 image._owner = req.body.user_id;
+//                 image.save((error, response) => {
+//                     res.status(201).json({ public_id: result.public_id, url: result.url })
+
+//                 })
+//             } else {
+//                 res.json(error);
+//             }
+//         });
+//     } else {
+//         next();
+//     }
+// });
+
+
 router.post('/upload', multipartMiddleware, function (req, res, next) {
-    if (req.files.file) {
-        cloudinary.uploader.upload(req.files.file.path, function (result) {
-            if (result.url) {
-                let image = new Image();
-
-                image.public_id = result.public_id;
-                image.url = result.url;
-                image._owner = req.body.user_id;
-                image.save((error, response) => {
-                    res.status(201).json({ public_id: result.public_id, url: result.url })
-
-                })
-            } else {
-                res.json(error);
-            }
-        });
-    } else {
-        next();
+    //cloudinary.config(clodinaryConfigs)
+    let images = [];
+    let promiseArray = [];
+    if (req.files.file.length) {
+        if (req.params.id && req.session.user.isAdmin || req.session._id) {
+            req.files.file.forEach(img => {
+                let id = req.params.id ? req.params.id : req.session._id
+                promiseArray.push(loadImage(img, id))
+            })
+            Promise.all(promiseArray).then(result => {
+                res.status(201).send(result)
+            })
+        }
+    }
+    else {
+        next()
     }
 });
 

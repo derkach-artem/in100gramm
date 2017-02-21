@@ -14,17 +14,17 @@
         .dragover {
             border: 5px dashed blue;
         }
-
+        
         th {
-            padding :5px;
+            padding: 5px;
         }
-
+        
         tr {
             border-bottom: 2px solid grey;
         }
-
+        
         table {
-            width : 100%;
+            width: 100%;
         }
     </style>
     <div class="col-lg-3 col-md-3 col-sm-3" ng-if="thisUser">
@@ -34,19 +34,16 @@
     </div>
 
     <div class="col-lg-9 col-md-9 col-sm-9" ng-if="thisUser" ng-controller="userCtrl">
-        <div ngf-drop ngf-select ng-model="files" class="drop-box" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-            accept="image/*,application/pdf" ngf-pattern="'image/*,application/pdf'">Drop pdfs or images</div>
-        <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-        Files:
-        <!--<ul>
-            <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
-        </ul>-->
-        Upload Log:
 
 
-        <!--<ul>
-            <li ng-repeat="f in files"><img ngf-src="!files[0].$error && files[$index]" ngf-resize="{width: 200, height: 200, quality: 0.9}"></li>
-        </ul>-->
+        <form name="form">
+            <div class="panel panel-primary" ngf-select ng-model="files" ngf-multiple="true">
+                <div class="panel-body">
+                    Click to load Image
+                </div>
+            </div>
+            <button ng-disabled="!files" type="button" class="btn btn-primary" ng-click="loadImgs(files)">submit</button>
+        </form>
 
         <table>
             <thead>
@@ -65,7 +62,9 @@
                 </tr>
             </tbody>
         </table>
-        <!--<img ngf-src="!files[0].$error && files[0]" ngf-resize="{width: 50, height: 50, quality: 0.9}">-->
+
+
+
 
         <div class="progress">
             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{progressPercentage}}" aria-valuemin="0" aria-valuemax="100"
@@ -73,10 +72,20 @@
                 </span>
             </div>
         </div>
-
-
     </div>
+    <!--<img ngf-src="!files[0].$error && files[0]" ngf-resize="{width: 50, height: 50, quality: 0.9}">-->
 
-    <p>USER PAGE</p>
 
-    <button type="button" class="btn btn-success" ng-click='my-upload()'>Success</button>
+
+    <!--<uib-progressbar max="max" value="dynamic" ng-if="files">
+        <span style="color:white; white-space:nowrap;">{{dynamic}} / {{max}}</span>
+    </uib-progressbar>-->
+
+
+</div>
+
+<p>USER PAGE</p>
+
+
+
+<button type="button" class="btn btn-success" ng-click='loadImgs(files)'>Success</button>
