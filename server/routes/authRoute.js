@@ -194,27 +194,74 @@ cloudinary.config({
 //         next();
 //     }
 // });
+var loadImage = (img, id) => {
+
+    return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(img.path, function (result) {
+            if (result.url) {
+                let image = new Image();
+                image.public_id = result.public_id;//
+                    image.url = result.url;//
+                    image._owner = req.body.user_id;//
+
+                image.save((error, response) => { //
+                    if (error) {
+                        reject('mongodb err')
+                    }
+                    resolve({public_id:result.public_id,url:result.url});
+                })
+            }
+            else {
+                reject('cloudinary err');
+            }
+        });
+    })
+}
+
+
+
+// router.post('/upload', multipartMiddleware, function (req, res, next) {
+//     let images = [];
+//     let promiseArray = [];
+//     if (req.files.file.length) {
+//         if (req.params.id && req.session.user.isAdmin || req.session._id) {
+//             req.files.file.forEach(img => {
+//                 let id = req.params.id ? req.params.id : req.session._id
+//                 promiseArray.push(loadImage(img, id))
+//             })
+//             Promise.all(promiseArray).then(result => {
+//                 res.status(201).send(result)
+//             })
+//         }
+//     }
+//     else {
+//         next()
+//     }
+// });
 
 
 router.post('/upload', multipartMiddleware, function (req, res, next) {
-    //cloudinary.config(clodinaryConfigs)
-    let images = [];
-    let promiseArray = [];
-    if (req.files.file.length) {
-        if (req.params.id && req.session.user.isAdmin || req.session._id) {
-            req.files.file.forEach(img => {
-                let id = req.params.id ? req.params.id : req.session._id
-                promiseArray.push(loadImage(img, id))
-            })
-            Promise.all(promiseArray).then(result => {
-                res.status(201).send(result)
-            })
+        if (req.files.file) {
+            cloudinary.uploader.upload(req.files.file.path, function (result) {
+                if (result.url) {
+                    // req.imageLink = result.url;
+                    let image = new Image();
+                    
+                    image.public_id = result.public_id;
+                    image.url = result.url;
+                    image._owner = req.body.user_id;
+                    image.save((error, response) => {
+                        res.status(201).json({public_id:result.public_id,url:result.url})
+                        
+                    })
+                } else {
+                    res.json(error);
+                }
+            });
+        } else {
+            next();
         }
-    }
-    else {
-        next()
-    }
-});
+    });
 
 router.post('/getCurrentUser', function (request, response) {
     User.findOne({ username: request.body.userId }, function (err, user) {

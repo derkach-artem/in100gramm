@@ -1,4 +1,3 @@
-//страница загружает страницу пользователя, работает как ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
 angular.module('userModule', ['ngFileUpload'])
     .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope, Upload) {
 
@@ -36,16 +35,30 @@ angular.module('userModule', ['ngFileUpload'])
 
         $scope.toggle = true;
 
-        $scope.loadImgs = function (files) {
-            return Upload.upload({
-                url: '/upload',
-                data: { file: files }
-            })
-                .then(res => {
-                    if (res.status = 201) {
-                        return res.data;
-                    }
+        $scope.loadImgs = function (files, errFiles) {
+            // $scope.progress = 0;
+            $scope.files = files;
+            $scope.errFiles = errFiles;
+            angular.forEach(files, function (file) {
+                file.upload = Upload.upload({
+                    url: '/upload',
+                    data: { "user_id": $scope.currentUser._id },
+                    file: file
                 });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        $scope.images.push({ url: response.data.url, public_id: response.data.public_id });
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    $scope.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+            });
+            $scope.progress = 0;
         };
 
         $scope.cangeVisibleProfile = function () {
@@ -61,6 +74,34 @@ angular.module('userModule', ['ngFileUpload'])
             $scope.files.splice($index, 1);
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
