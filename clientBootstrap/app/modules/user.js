@@ -12,12 +12,14 @@ angular.module('userModule', ['ngFileUpload'])
             .then(function (data) {
                 $scope.currentUser = data.data;
             })
-            // .then(function() {
-            //     $http.post('/getImagesCurrentUser', $scope.currentUser)
-            //         .then(function(data) {
-            //             $scope.images = data.data;
-            //         })
-            // })
+            //////
+            .then(function() {
+                $http.post('/getImagesCurrentUser', $scope.currentUser)
+                    .then(function(data) {
+                        $scope.images = data.data;
+                    })
+            })
+            //////
             .then(function () {
                 if (token == null) {
                     $scope.thisUser = false;
@@ -58,7 +60,8 @@ angular.module('userModule', ['ngFileUpload'])
                     $scope.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                 });
             });
-            $scope.progress = 0;
+            console.log('DONE');
+            $scope.files = null;
         };
 
         $scope.cangeVisibleProfile = function () {

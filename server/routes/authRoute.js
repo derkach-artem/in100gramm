@@ -5,7 +5,6 @@ var LocalStrategy = require("passport-local").Strategy;
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart({ uploadDir: __dirname + '/../temp' });
 
-
 //const Image = mongoose.model('Image');
 const cloudinary = require('cloudinary');
 
@@ -160,40 +159,12 @@ router.get('/#!/user/:username', function (req, res) {
     });
 });
 
-// router.post('/images', multipartMiddleware, function(req, res){
-//     console.log('IMAGES');
-//     res.send({ok : 'OK'});
-// });
-
-
-
 cloudinary.config({
     cloud_name: 'db6y5mykq',
     api_key: '392787289682527',
     api_secret: '9Jma95FhgYoCW03AY1gxZ6ChWgg'
 });
 
-// router.post('/upload', multipartMiddleware, function (req, res, next) {
-//     console.log(req.files.file);
-//     if (req.files.files) {
-//         cloudinary.uploader.upload(req.files.file.path, function (result) {
-//             if (result.url) {
-//                 let image = new Image();
-//                 image.public_id = result.public_id;
-//                 image.url = result.url;
-//                 image._owner = req.body.user_id;
-//                 image.save((error, response) => {
-//                     res.status(201).json({ public_id: result.public_id, url: result.url })
-
-//                 })
-//             } else {
-//                 res.json(error);
-//             }
-//         });
-//     } else {
-//         next();
-//     }
-// });
 var loadImage = (img, id) => {
 
     return new Promise((resolve, reject) => {
@@ -216,37 +187,13 @@ var loadImage = (img, id) => {
             }
         });
     })
-}
-
-
-
-// router.post('/upload', multipartMiddleware, function (req, res, next) {
-//     let images = [];
-//     let promiseArray = [];
-//     if (req.files.file.length) {
-//         if (req.params.id && req.session.user.isAdmin || req.session._id) {
-//             req.files.file.forEach(img => {
-//                 let id = req.params.id ? req.params.id : req.session._id
-//                 promiseArray.push(loadImage(img, id))
-//             })
-//             Promise.all(promiseArray).then(result => {
-//                 res.status(201).send(result)
-//             })
-//         }
-//     }
-//     else {
-//         next()
-//     }
-// });
-
+};
 
 router.post('/upload', multipartMiddleware, function (req, res, next) {
         if (req.files.file) {
             cloudinary.uploader.upload(req.files.file.path, function (result) {
                 if (result.url) {
-                    // req.imageLink = result.url;
-                    let image = new Image();
-                    
+                    let image = new Image();         
                     image.public_id = result.public_id;
                     image.url = result.url;
                     image._owner = req.body.user_id;
@@ -287,8 +234,6 @@ router.post('/checkUser', function (request, response) {
         response.status(500).send({ err: "You need to logout and login again" })
     }
 })
-
-//определить владельца страницы
 
 
 module.exports = router;
