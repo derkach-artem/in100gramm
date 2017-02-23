@@ -1,6 +1,10 @@
 angular.module('userModule', ['ngFileUpload'])
     .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope, Upload) {
 
+        $http.get('/checkprofile')
+            .then(function (data) {
+                $scope.hiddenProfile = data.data.private;
+            });
 
         let token = window.localStorage.getItem('jwt');
         $scope.thisUser = false;
@@ -12,14 +16,12 @@ angular.module('userModule', ['ngFileUpload'])
             .then(function (data) {
                 $scope.currentUser = data.data;
             })
-            //////
-            .then(function() {
+            .then(function () {
                 $http.post('/getImagesCurrentUser', $scope.currentUser)
-                    .then(function(data) {
+                    .then(function (data) {
                         $scope.images = data.data;
                     })
             })
-            //////
             .then(function () {
                 if (token == null) {
                     $scope.thisUser = false;
@@ -72,67 +74,8 @@ angular.module('userModule', ['ngFileUpload'])
         };
 
         $scope.del = function ($index) {
-            console.log($index);
-            console.log($scope.files);
+            // console.log($index);
+            // console.log($scope.files);
             $scope.files.splice($index, 1);
         }
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //$scope.username = $rootScope.username;
-        //console.log($stateParams.username);
-
-        // var token = window.localStorage.getItem('jwt');
-        // if (token == null) {
-        //     $state.transitionTo('login');
-        //     return;
-        // } else {
-        //     $http.post('/isauth', {
-        //         token: token
-        //     })
-        //         .then(function (data) {
-        //             //$state.go('user', { username: $rootScope.name });
-        //             //$location.path('/user/'+ response.data.name);
-        //             $state.go('user', { username: $stateParams.username });
-        //         })
-        //         // .then(function () {
-        //         //     $http.get('/checkprofile')
-        //         //         .then(function (data) {
-        //         //             $scope.hiddenProfile = data.data.private;
-        //         //         });
-        //         // })
-        //         .catch(function (err) {
-        //             $state.transitionTo('login');
-        //         });
-        // };

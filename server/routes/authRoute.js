@@ -5,7 +5,6 @@ var LocalStrategy = require("passport-local").Strategy;
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart({ uploadDir: __dirname + '/../temp' });
 
-//const Image = mongoose.model('Image');
 const cloudinary = require('cloudinary');
 
 
@@ -78,12 +77,12 @@ router.post('/isauth', function (request, response) {
 router.get('/checkprofile', function (request, response) {
     User.findOne({ _id: request.session._id }, function (err, res) {
         if (!err) {
-            ;
             response.send({
                 "private": res.private
             });
         } else {
             console.log('ERROR PROFILE DATA');
+            res.send('ERROR CHECK PROFILE');
         }
     });
 });
@@ -172,14 +171,14 @@ var loadImage = (img, id) => {
             if (result.url) {
                 let image = new Image();
                 image.public_id = result.public_id;//
-                    image.url = result.url;//
-                    image._owner = req.body.user_id;//
+                image.url = result.url;//
+                image._owner = req.body.user_id;//
 
                 image.save((error, response) => { //
                     if (error) {
                         reject('mongodb err')
                     }
-                    resolve({public_id:result.public_id,url:result.url});
+                    resolve({ public_id: result.public_id, url: result.url });
                 })
             }
             else {
@@ -190,25 +189,40 @@ var loadImage = (img, id) => {
 };
 
 router.post('/upload', multipartMiddleware, function (req, res, next) {
-        if (req.files.file) {
-            cloudinary.uploader.upload(req.files.file.path, function (result) {
-                if (result.url) {
-                    let image = new Image();         
-                    image.public_id = result.public_id;
-                    image.url = result.url;
-                    image._owner = req.body.user_id;
-                    image.save((error, response) => {
-                        res.status(201).json({public_id:result.public_id,url:result.url})
-                        
-                    })
-                } else {
-                    res.json(error);
-                }
-            });
+    if (req.files.file) {
+        cloudinary.uploader.upload(req.files.file.path, function (result) {
+            if (result.url) {
+                let image = new Image();
+                image.public_id = result.public_id;
+                image.url = result.url;
+                image._owner = req.body.user_id;
+                image.save((error, response) => {
+                    res.status(201).json({ public_id: result.public_id, url: result.url })
+
+                })
+            } else {
+                res.json(error);
+            }
+        });
+    } else {
+        next();
+    }
+});
+
+
+router.post('/getImagesCurrentUser', function (request, response) {
+    var currentImagesArray = [];
+    Image.find({ "_owner": request.body._id }, function (err, data) {
+        if (err) {
+            response.status(400).send({ err: "Error" });
         } else {
-            next();
+            data.forEach(function (im) {
+                currentImagesArray.push({ url: im.url, id: im.public_id })
+            })
+            response.json(currentImagesArray)
         }
-    });
+    })
+});
 
 router.post('/getCurrentUser', function (request, response) {
     User.findOne({ username: request.body.userId }, function (err, user) {
