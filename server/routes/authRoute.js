@@ -74,18 +74,34 @@ router.post('/isauth', function (request, response) {
     }
 });
 
+// router.get('/checkprofile', function (request, response) {
+//     User.findOne({ _id: request.session._id }, function (err, res) {
+//         if (!err) {
+//             if (res === null) {
+//                 response.send({ msg: 'guest' });
+//             }
+//             response.send({
+//                 "private": res.private
+//             });
+//         } else {
+//             console.log('ERROR PROFILE DATA');
+//             res.send('ERROR CHECK PROFILE');
+//         }
+//     });
+// });
+
 router.get('/checkprofile', function (request, response) {
     User.findOne({ _id: request.session._id }, function (err, res) {
-        if (!err) {
-            response.send({
-                "private": res.private
-            });
-        } else {
-            console.log('ERROR PROFILE DATA');
-            res.send('ERROR CHECK PROFILE');
-        }
+        console.log(res);
+        if (err) {
+            console.log('err');
+            response.send({msg : 'err'});
+        } else if (res === null) {
+            console.log('null')
+        } 
     });
-});
+})
+
 
 router.post('/changeprivate', function (request, response) {
     User.update({ _id: request.session._id },
