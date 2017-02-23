@@ -27,7 +27,8 @@
             width: 100%;
         }
     </style>
-    <div class="col-lg-3 col-md-3 col-sm-3" ng-if="thisUser">
+
+    <div class="col-lg-3 col-md-3 col-sm-3" ng-if="thisUser" ng-controller="userCtrl">
         <label> Hidden profile
             <input type="checkbox" ng-model="hiddenProfile" ng-change="cangeVisibleProfile()">
         </label>
