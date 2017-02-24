@@ -1,16 +1,17 @@
 angular.module('userModule', ['ngFileUpload'])
     .controller('userCtrl', function ($scope, $http, $location, $state, $timeout, jwtHelper, $stateParams, $rootScope, Upload) {
 
+        $scope.isAuth = false;
+
+        $scope.checkJWT = function () {
+
+        }
+
+
+
         $scope.images = [];
         $scope.my_images = [];
-        $http.get('/checkprofile')
-            .then(function (data) {
-                if (typeof(data) === boolean){
-                    $scope.hiddenProfile = data.data.private;    
-                }
-                // $scope.hiddenProfile = data.data.private;
-                console.log('guest');
-            });
+
 
         let token = window.localStorage.getItem('jwt');
         $scope.thisUser = false;
@@ -44,6 +45,13 @@ angular.module('userModule', ['ngFileUpload'])
                 }
             });
 
+        if (token) {
+            $http.get('/checkprofile')
+                .then(function (data) {
+                    $scope.hiddenProfile = data.data.private;
+                });
+        }
+
         $scope.toggle = true;
 
         $scope.loadImgs = function (files, errFiles) {
@@ -67,7 +75,9 @@ angular.module('userModule', ['ngFileUpload'])
                         $scope.errorMsg = response.status + ': ' + response.data;
                 }, function (evt) {
                     $scope.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                });
+                }).then(function(){
+                    $state.reload();
+                })
             });
             console.log('DONE');
             $scope.files = null;

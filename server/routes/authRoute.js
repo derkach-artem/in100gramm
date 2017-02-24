@@ -92,15 +92,16 @@ router.post('/isauth', function (request, response) {
 
 router.get('/checkprofile', function (request, response) {
     User.findOne({ _id: request.session._id }, function (err, res) {
-        console.log(res);
-        if (err) {
-            console.log('err');
-            response.send({msg : 'err'});
-        } else if (res === null) {
-            console.log('null')
-        } 
+        if (!err) {
+            //console.log(res.private);
+            response.send({
+                "private": res.private
+            });
+        } else {
+            console.log('ERROR PROFILE DATA');
+        }
     });
-})
+});
 
 
 router.post('/changeprivate', function (request, response) {
