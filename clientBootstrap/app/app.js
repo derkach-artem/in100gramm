@@ -62,6 +62,7 @@ angular.module('app', ['ui.bootstrap', 'ngAnimate', 'ngSanitize', 'ui.router', '
     .controller('appCtrl', function ($scope, $http, $location, auth, $rootScope, $stateParams) {
 
         $scope.users = [];
+        console.log('APP START');
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             $scope.isLogin = auth.isLogin();

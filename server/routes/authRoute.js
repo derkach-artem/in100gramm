@@ -264,7 +264,17 @@ router.post('/checkUser', function (request, response) {
     } else {
         response.status(500).send({ err: "You need to logout and login again" })
     }
-})
+});
+
+
+router.delete('/home/image/:id', function (request, response) {
+    Image.remove({ 'public_id': request.params.id }, function () {
+        cloudinary.api.delete_resources([request.params.id],
+            function (result) {
+                response.status(200).send(true);
+            });
+    })
+});
 
 
 module.exports = router;

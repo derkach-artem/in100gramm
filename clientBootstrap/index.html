@@ -18,9 +18,31 @@
     <script src="./app/modules/user.js"></script>
     <script src="./app/modules/userIDCtrl.js"></script>
 
+    <style>
+        [ng\:cloak],
+        [ng-cloak],
+        .ng-cloak {
+            display: none;
+        }
+        
+        .image-wrap {
+            position: relative;
+        }
+        
+        .user-pic {
+            width: 100%;
+        }
+        
+        .x {
+            position: absolute;
+            top: 0px;
+            left: 20px;
+        }
+    </style>
+
 </head>
 
-<body ng-app="app" ng-controller="appCtrl">
+<body ng-app="app" ng-controller="appCtrl" ng-cloak="">
     <div class="container">
         <nav class="navbar navbar-default" role="navigation">
             <div class="navbar-header">

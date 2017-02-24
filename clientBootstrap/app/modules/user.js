@@ -3,12 +3,6 @@ angular.module('userModule', ['ngFileUpload'])
 
         $scope.isAuth = false;
 
-        $scope.checkJWT = function () {
-
-        }
-
-
-
         $scope.images = [];
         $scope.my_images = [];
 
@@ -40,6 +34,7 @@ angular.module('userModule', ['ngFileUpload'])
                         .then(function (data) {
                             if ((data.data.isAdmin == true) || ($scope.currentUser.username == data.data.username)) {
                                 $scope.thisUser = true;
+                                // console.log('!!!!!');
                             }
                         })
                 }
@@ -75,7 +70,7 @@ angular.module('userModule', ['ngFileUpload'])
                         $scope.errorMsg = response.status + ': ' + response.data;
                 }, function (evt) {
                     $scope.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                }).then(function(){
+                }).then(function () {
                     $state.reload();
                 })
             });
@@ -97,5 +92,10 @@ angular.module('userModule', ['ngFileUpload'])
         };
 
 
-        // console.log($scope.my_images);
+        $scope.delPic = function ($index) {
+            $http.delete('/home/image/' + $scope.images[$index].id)
+                .then(function () {
+                    $scope.images.splice($index, 1)
+                })
+        };
     });
