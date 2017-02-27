@@ -8,7 +8,7 @@ cloudinary.config({
     cloud_name: 'db6y5mykq',
     api_key: '392787289682527',
     api_secret: '9Jma95FhgYoCW03AY1gxZ6ChWgg'
-}); // наверное перенести в роуты
+}); 
 
 
 var loadImage = function (img, id) {
@@ -16,11 +16,11 @@ var loadImage = function (img, id) {
         cloudinary.uploader.upload(img.path, function (result) {
             if (result.url) {
                 let image = new Image();
-                image.public_id = result.public_id;//
-                image.url = result.url;//
-                image._owner = req.body.user_id;//
+                image.public_id = result.public_id;
+                image.url = result.url;
+                image._owner = req.body.user_id;
 
-                image.save((error, response) => { //
+                image.save((error, response) => { 
                     if (error) {
                         reject('mongodb err')
                     }
