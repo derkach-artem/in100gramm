@@ -21,7 +21,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-var authRoutes = require('./routes/authRoute');
+// var authRoutes = require('./routes/authRoute');
 
 var setUpPassport = require('./auth/setup-passport');
 
@@ -36,7 +36,16 @@ app.use(express.static(path.join(__dirname, '../clientBootstrap')));
 app.use(passport.initialize());
 app.use(passport.session());
 
+// app.use('/', authRoutes);
+
+var authRoutes = require('./routes/authRoutes.js');
+var imageRoutes = require('./routes/imageRoutes.js');
+var userRoutes = require('./routes/userRoutes.js');
+
 app.use('/', authRoutes);
+app.use('/', imageRoutes);
+app.use('/', userRoutes);
+
 
 app.listen(3000, function () {
     console.log("Server is started at 3000 port");
