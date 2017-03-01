@@ -46,7 +46,7 @@
             <button ng-disabled="!files" type="button" class="btn btn-primary" ng-click="loadImgs(files)">submit</button>
         </form>
 
-        <table>
+        <table ng-show="files">
             <thead>
                 <tr>
                     <th>Image</th>
@@ -67,7 +67,7 @@
 
 
 
-        <div class="progress">
+        <div class="progress" ng-show="files">
             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100"
                 style="width: {{progress}}%;"> <span class="sr-only"></span>
             </div>
@@ -89,13 +89,20 @@
         }
     </style>-->
 
+    <style>
+        .x {
+            width: 10%;
+            height: 20%;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+
     <div class="container">
         <div class="row">
-            <div ng-repeat="image in images" class="image-wrap col-lg-3 col-md-3 col-sm-4 col-xs-12"><i class="x" ng-click="delPic($index)" ng-show="isLogin">X</i><img src="{{image.url}}" class="img-rounded user-pic"></div>
+            <div ng-repeat="image in images" class="image-wrap col-lg-3 col-md-3 col-sm-4 col-xs-12"><i class="x" ng-click="delPic($index)" ng-show="thisUser">X</i><img src="{{image.url}}" class="img-rounded user-pic"></div>
         </div>
     </div>
 
 
 </div>
-
-<p>USER PAGE</p>
